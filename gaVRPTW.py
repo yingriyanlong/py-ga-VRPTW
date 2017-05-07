@@ -58,10 +58,10 @@ def printRoute(route, merge=False):
             routeStr = routeStr + ' - ' + str(customerID)
         subRouteStr = subRouteStr + ' - 0'
         if not merge:
-            print '  Vehicle %d\'s route: %s' % (subRouteCount, subRouteStr)
+            print('  Vehicle %d\'s route: %s' % (subRouteCount, subRouteStr))
         routeStr = routeStr + ' - 0'
     if merge:
-        print routeStr
+        print(routeStr)
     return
 
 
@@ -158,18 +158,18 @@ def gaVRPTW(instName, unitCost, initCost, waitCost, delayCost, indSize, popSize,
     # Results holders for exporting results to CSV file
     csvData = []
 
-    print 'Start of evolution'
+    print('Start of evolution')
 
     # Evaluate the entire population
     fitnesses = list(map(toolbox.evaluate, pop))
     for ind, fit in zip(pop, fitnesses):
         ind.fitness.values = fit
 
-    print '  Evaluated %d individuals' % len(pop)
+    print('  Evaluated %d individuals' % len(pop))
 
     # Begin the evolution
     for g in range(NGen):
-        print '-- Generation %d --' % g
+        print('-- Generation %d --' % g)
 
         # Select the next generation individuals
         offspring = toolbox.select(pop, len(pop))
@@ -195,7 +195,7 @@ def gaVRPTW(instName, unitCost, initCost, waitCost, delayCost, indSize, popSize,
         for ind, fit in zip(invalidInd, fitnesses):
             ind.fitness.values = fit
 
-        print '  Evaluated %d individuals' % len(invalidInd)
+        print('  Evaluated %d individuals' % len(invalidInd))
 
         # The population is entirely replaced by the offspring
         pop[:] = offspring
@@ -208,10 +208,10 @@ def gaVRPTW(instName, unitCost, initCost, waitCost, delayCost, indSize, popSize,
         sum2 = sum(x*x for x in fits)
         std = abs(sum2 / length - mean**2)**0.5
 
-        print '  Min %s' % min(fits)
-        print '  Max %s' % max(fits)
-        print '  Avg %s' % mean
-        print '  Std %s' % std
+        print('  Min %s' % min(fits))
+        print('  Max %s' % max(fits))
+        print('  Avg %s' % mean)
+        print('  Std %s' % std)
 
         # Write data to holders for exporting results to CSV file
         if exportCSV:
@@ -225,16 +225,16 @@ def gaVRPTW(instName, unitCost, initCost, waitCost, delayCost, indSize, popSize,
             }
             csvData.append(csvRow)
 
-    print '-- End of (successful) evolution --'
+    print('-- End of (successful) evolution --')
 
     bestInd = tools.selBest(pop, 1)[0]
-    print 'Best individual: %s' % bestInd
-    print 'Fitness: %s' % bestInd.fitness.values[0]
+    print('Best individual: %s' % bestInd)
+    print('Fitness: %s' % bestInd.fitness.values[0])
     printRoute(ind2route(bestInd, instance))
-    print 'Total cost: %s' % (1 / bestInd.fitness.values[0])
+    print('Total cost: %s' % (1 / bestInd.fitness.values[0]))
 
     if exportCSV:
-        print 'Write to file: %s' % csvFile
+        print('Write to file: %s' % csvFile)
         makeDirsForFile(csvFile)
         if not existFile(csvFile, overwrite=True):
             with open(csvFile, 'w') as f:

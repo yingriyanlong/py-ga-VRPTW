@@ -4,8 +4,8 @@ import os
 
 
 ROOT_PATH = [
-    os.path.join(os.environ['HOME'], 'GitHub/py-ga-VRPTW'),
-    os.path.join(os.environ['HOME'], 'py-ga-VRPTW'),
+    os.path.join(os.environ['HOMEPATH'],r'CloudStation\tama\VRPTW'),
+    #os.path.join(os.environ['HOME'], r'py-ga-VRPTW'),
 ]
 
 
@@ -32,13 +32,13 @@ def existFile(filename, overwrite=False, displayInfo=True):
         if overwrite:
             os.remove(filename)
             if displayInfo:
-                print 'File: %s exists. Remove: overwrite old file.' % filename
+                print('File: %s exists. Remove: overwrite old file.' % filename)
             return False
         else:
             if displayInfo:
-                print 'File: %s exists. Skip: no new file is created.' % filename
+                print('File: %s exists. Skip: no new file is created.' % filename)
             return True
     else:
         if displayInfo:
-            print 'File: %s does not exist. Create new file. ' % filename
+            print('File: %s does not exist. Create new file. ' % filename)
         return False

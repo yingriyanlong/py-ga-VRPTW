@@ -38,6 +38,7 @@ replacing classes.
 
 try:
     import numpy
+
     (numpy.ndarray, numpy.array)
 except ImportError:
     # Numpy is not present, skip the definition of the replacement class.
@@ -62,20 +63,22 @@ else:
             """Creates a new instance of a numpy.ndarray from a function call.
             Adds the possibility to instanciate from an iterable."""
             return numpy.array(list(iterable)).view(cls)
-            
+
         def __setstate__(self, state):
             self.__dict__.update(state)
 
         def __reduce__(self):
-            return (self.__class__, (list(self),), self.__dict__)
+            return self.__class__, (list(self),), self.__dict__
+
 
     class_replacers[numpy.ndarray] = _numpy_array
+
 
 class _array(array.array):
     @staticmethod
     def __new__(cls, seq=()):
         return super(_array, cls).__new__(cls, cls.typecode, seq)
-    
+
     def __deepcopy__(self, memo):
         """Overrides the deepcopy from array.array that does not copy
         the object's attributes and class type.
@@ -87,8 +90,11 @@ class _array(array.array):
         return copy_
 
     def __reduce__(self):
-        return (self.__class__, (list(self),), self.__dict__)
+        return self.__class__, (list(self),), self.__dict__
+
+
 class_replacers[array.array] = _array
+
 
 def create(name, base, **kargs):
     """Creates a new class named *name* inheriting from *base* in the
@@ -125,7 +131,7 @@ def create(name, base, **kargs):
     """
     dict_inst = {}
     dict_cls = {}
-    for obj_name, obj in kargs.iteritems():
+    for obj_name, obj in kargs.items():
         if isinstance(obj, type):
             dict_inst[obj_name] = obj
         else:
@@ -144,7 +150,7 @@ def create(name, base, **kargs):
         """Replace the __init__ function of the new type, in order to
         add attributes that were defined with **kargs to the instance.
         """
-        for obj_name, obj in dict_inst.iteritems():
+        for obj_name, obj in dict_inst.items():
             setattr(self, obj_name, obj())
         if base.__init__ is not object.__init__:
             base.__init__(self, *args, **kargs)

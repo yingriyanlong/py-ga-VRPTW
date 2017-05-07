@@ -85,7 +85,7 @@ def selRoulette(individuals, k):
     sum_fits = sum(ind.fitness.values[0] for ind in individuals)
     
     chosen = []
-    for i in xrange(k):
+    for i in range(k):
         u = random.random() * sum_fits
         sum_ = 0
         for ind in s_inds:
