@@ -4,6 +4,7 @@ import random
 from functools import partial
 from operator import attrgetter
 
+
 ######################################
 # Selections                         #
 ######################################
@@ -20,7 +21,7 @@ def selRandom(individuals, k):
     This function uses the :func:`~random.choice` function from the
     python base :mod:`random` module.
     """
-    return [random.choice(individuals) for i in xrange(k)]
+    return [random.choice(individuals) for i in range(k)]
 
 
 def selBest(individuals, k):
@@ -59,10 +60,11 @@ def selTournament(individuals, k, tournsize):
     :mod:`random` module.
     """
     chosen = []
-    for i in xrange(k):
+    for i in range(k):
         aspirants = selRandom(individuals, tournsize)
         chosen.append(max(aspirants, key=attrgetter("fitness")))
     return chosen
+
 
 def selRoulette(individuals, k):
     """Select *k* individuals from the input *individuals* using *k*
@@ -83,7 +85,7 @@ def selRoulette(individuals, k):
     """
     s_inds = sorted(individuals, key=attrgetter("fitness"), reverse=True)
     sum_fits = sum(ind.fitness.values[0] for ind in individuals)
-    
+
     chosen = []
     for i in range(k):
         u = random.random() * sum_fits
@@ -93,7 +95,7 @@ def selRoulette(individuals, k):
             if sum_ > u:
                 chosen.append(ind)
                 break
-    
+
     return chosen
 
 
@@ -141,7 +143,7 @@ def selDoubleTournament(individuals, k, fitness_size, parsimony_size, fitness_fi
 
     def _sizeTournament(individuals, k, select):
         chosen = []
-        for i in xrange(k):
+        for i in range(k):
             # Select two individuals from the population
             # The first individual has to be the shortest
             prob = parsimony_size / 2.
@@ -158,20 +160,21 @@ def selDoubleTournament(individuals, k, fitness_size, parsimony_size, fitness_fi
             chosen.append(ind1 if random.random() < prob else ind2)
 
         return chosen
-    
+
     def _fitTournament(individuals, k, select):
         chosen = []
-        for i in xrange(k):
+        for i in range(k):
             aspirants = select(individuals, k=fitness_size)
             chosen.append(max(aspirants, key=attrgetter("fitness")))
         return chosen
-    
+
     if fitness_first:
         tfit = partial(_fitTournament, select=selRandom)
         return _sizeTournament(individuals, k, tfit)
     else:
         tsize = partial(_sizeTournament, select=selRandom)
         return _fitTournament(individuals, k, tsize)
+
 
 __all__ = ['selRandom', 'selBest', 'selWorst', 'selRoulette',
            'selTournament', 'selDoubleTournament']

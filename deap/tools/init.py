@@ -69,7 +69,7 @@ def initCycle(container, seq_func, n=1):
 
     See the :ref:`funky` tutorial for an example.
     """
-    return container(func() for _ in xrange(n) for func in seq_func)
+    return container(func() for _ in range(n) for func in seq_func)
 
 __all__ = ['initRepeat', 'initIterate', 'initCycle']
 
